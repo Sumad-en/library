@@ -9,10 +9,12 @@ public class BookRepository
     private readonly NpgsqlDataSource _dataSource;
 
     // ASP.NET Core hands in the data source that Program.cs registered.
+
     public BookRepository(NpgsqlDataSource dataSource)
     {
         _dataSource = dataSource;
     }
+
     // Copies the current row of the reader into a Book.
     // The positions 0 to 3 match the column order in both SELECTs above.
     private static Book ReadBook(NpgsqlDataReader reader)
