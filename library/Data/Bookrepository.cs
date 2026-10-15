@@ -101,5 +101,13 @@ public class BookRepository
         await command.ExecuteNonQueryAsync();
     }
 
+    internal async Task updateAsync(Book book)
+    {
+        throw new NotImplementedException();
+    }
 
+    internal async Task addAsync(Book book)
+    {
+        throw new NotImplementedException();
+    }
 }

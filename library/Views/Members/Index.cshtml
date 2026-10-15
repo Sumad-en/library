@@ -1,0 +1,41 @@
+﻿@model List<Members>
+@{
+    ViewData["full_name"] = "Members";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="mb-0">Members</h1>
+        <p class="text-muted mb-0">@Model.Count members in the catalogue</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">Add a member</a>
+</div>
+
+<table class="table table-striped table-hover align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th class="text-end" style="width:4rem">#</th>
+            <th>Full name</th>
+            <th>Member Type</th>
+            <th class="text-end">mail</th>
+            <th style="width:10rem"></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var members in Model)
+        {
+            <tr>
+                <td class="text-end">@members.member_id</td>
+                <td>@members.full_name</td>
+                <td><span class="badge text-bg-secondary">@(members.member_type ?? "—")</span></td>
+                <td class="text-end">@(members.email ?? "—")</td>
+                <td class="text-end">
+                    @* Task 10 puts the Edit button here *@
+                    @* Task 11 puts the Delete button here *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
