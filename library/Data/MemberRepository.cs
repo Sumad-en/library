@@ -61,4 +61,33 @@ public class MemberRepository
         await command.ExecuteNonQueryAsync();           // runs SQL that returns no rows
     }
 
+    // READ: one member, or null when no member has that id.
+    public async Task<Members?> GetByIdAsync(long id)
+    {
+        const string sql = "SELECT member_id, full_name, member_type, email FROM lending.member WHERE member_id = @id;";
+
+        await using var command = _dataSource.CreateCommand(sql);
+        command.Parameters.AddWithValue("id", id);      // @id in the SQL receives this value
+
+        await using var reader = await command.ExecuteReaderAsync();
+        return await reader.ReadAsync() ? ReadMember(reader) : null;
+    }
+
+    // UPDATE: change every column of one member.
+    public async Task UpdateAsync(Members members)
+    {
+        const string sql = "UPDATE lending.member " +
+                           "SET full_name = @full_name, member_type = @member_type, email = @email " +
+                           "WHERE member_id = @id;";
+
+        await using var command = _dataSource.CreateCommand(sql);
+        command.Parameters.AddWithValue("Full name", members.full_name);
+        command.Parameters.AddWithValue("Member Type", members.member_type);
+        command.Parameters.AddWithValue("price", (object?)members.email ?? DBNull.Value);
+        command.Parameters.AddWithValue("id", members.member_id);
+
+        await command.ExecuteNonQueryAsync();
+    }
+
+
 }

@@ -41,5 +41,31 @@ public class MembersController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    // GET /Members/Edit/5 : the form, filled with member 5.
+    public async Task<IActionResult> Edit(long id)
+    {
+        var members = await _members.GetByIdAsync(id);
+        if (members == null)
+        {
+            return NotFound();
+        }
+        return View(members);
+    }
+
+    // POST /Books/Edit/5 : the changed form was submitted.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(Members members)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(members);
+        }
+
+        await _members.UpdateAsync(members);
+        return RedirectToAction(nameof(Index));
+    }
+
+
 
 }
