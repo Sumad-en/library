@@ -55,7 +55,7 @@ public class MemberRepository
         await using var command = _dataSource.CreateCommand(sql);
         command.Parameters.AddWithValue("full_name", members.full_name);
         // A C# null must be sent as DBNull.Value, which is how a database NULL is written.
-        command.Parameters.AddWithValue("member_type", (object?)members.member_type ?? DBNull.Value);
+        command.Parameters.AddWithValue("member_type", members.member_type);
         command.Parameters.AddWithValue("email", (object?)members.email ?? DBNull.Value);
 
         await command.ExecuteNonQueryAsync();           // runs SQL that returns no rows
