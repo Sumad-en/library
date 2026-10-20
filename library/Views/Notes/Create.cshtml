@@ -1,0 +1,33 @@
+﻿@model Notes
+@{
+    ViewData["Title"] = "Add a note";
+}
+
+<h1 class="mb-3">Add a note</h1>
+
+<form asp-action="Create" method="post" class="card card-body" style="max-width:36rem">
+
+    <div class="mb-3">
+        <label asp-for="title" class="form-label"></label>
+        <input asp-for="title" class="form-control" />
+        <span asp-validation-for="title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="body" class="form-label"></label>
+        <input asp-for="body" class="form-control" />
+        <span asp-validation-for="body" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="created_on" class="form-label"></label>
+        <input asp-for="created_on" class="form-control" />
+        <span asp-validation-for="created_on" class="text-danger"></span>
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" class="btn btn-link">Cancel</a>
+    </div>
+</form>
+

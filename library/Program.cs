@@ -20,6 +20,9 @@ builder.Services.AddScoped<BookRepository>();
 // Repositories: one new object per web request.
 builder.Services.AddScoped<MemberRepository>();
 
+// Repositories: one new object per web request.
+builder.Services.AddScoped<Noterepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
