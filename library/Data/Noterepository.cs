@@ -52,12 +52,50 @@ public class Noterepository
         await using var command = _dataSource.CreateCommand(sql);
         command.Parameters.AddWithValue("title", notes.title);
         // A C# null must be sent as DBNull.Value, which is how a database NULL is written.
-        command.Parameters.AddWithValue("category", (object?)notes.body ?? DBNull.Value);
-        command.Parameters.AddWithValue("price", (object?)notes.created_on ?? DBNull.Value);
+        command.Parameters.AddWithValue("body", (object?)notes.body ?? DBNull.Value);
+        command.Parameters.AddWithValue("created_on", (object?)notes.created_on ?? DBNull.Value);
 
         await command.ExecuteNonQueryAsync();           // runs SQL that returns no rows
     }
 
+    // READ: one note, or null when no book has that id.
+    public async Task<Notes?> GetByIdAsync(long id)
+    {
+        const string sql = "SELECT note_id, title, body, created_on FROM lending.note WHERE note_id = @id;";
+
+        await using var command = _dataSource.CreateCommand(sql);
+        command.Parameters.AddWithValue("id", id);      // @id in the SQL receives this value
+
+        await using var reader = await command.ExecuteReaderAsync();
+        return await reader.ReadAsync() ? ReadNote(reader) : null;
+    }
+
+    // UPDATE: change every column of one book.
+    public async Task UpdateAsync(Notes notes)
+    {
+        const string sql = "UPDATE lending.note " +
+                           "SET title = @title, body = @body, created_on = @created_on " +
+                           "WHERE note_id = @id;";
+
+        await using var command = _dataSource.CreateCommand(sql);
+        command.Parameters.AddWithValue("title", notes.title);
+        command.Parameters.AddWithValue("category", (object?)notes.body ?? DBNull.Value);
+        command.Parameters.AddWithValue("price", (object?)notes.created_on ?? DBNull.Value);
+        command.Parameters.AddWithValue("id", notes.note_id);
+
+        await command.ExecuteNonQueryAsync();
+    }
+
+    // DELETE: remove one book.
+    public async Task DeleteAsync(long id)
+    {
+        const string sql = "DELETE FROM lending.note WHERE note_id = @id;";
+
+        await using var command = _dataSource.CreateCommand(sql);
+        command.Parameters.AddWithValue("id", id);
+
+        await command.ExecuteNonQueryAsync();
+    }
 
 }
 
