@@ -79,9 +79,9 @@ public class Noterepository
 
         await using var command = _dataSource.CreateCommand(sql);
         command.Parameters.AddWithValue("title", notes.title);
-        command.Parameters.AddWithValue("category", (object?)notes.body ?? DBNull.Value);
-        command.Parameters.AddWithValue("price", (object?)notes.created_on ?? DBNull.Value);
-        command.Parameters.AddWithValue("id", notes.note_id);
+        command.Parameters.AddWithValue("body", (object?)notes.body ?? DBNull.Value);
+        command.Parameters.AddWithValue("created_on", (object?)notes.created_on ?? DBNull.Value);
+        command.Parameters.AddWithValue("note_id", notes.note_id);
 
         await command.ExecuteNonQueryAsync();
     }
