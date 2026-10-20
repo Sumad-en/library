@@ -3,48 +3,275 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - library</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/library.styles.css" asp-append-version="true" />
+
+    <title>@ViewData["Title"] - LibraryHub</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+    <link rel="stylesheet"
+          href="~/library.styles.css"
+          asp-append-version="true" />
+
+    <style>
+            body {
+                margin: 0;
+                background: #f4f6fb;
+                color: #1f2937;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            .app-layout {
+                display: flex;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                width: 250px;
+                flex-shrink: 0;
+                background: #111827;
+                color: white;
+                padding: 28px 18px;
+            }
+
+            .brand {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                color: white;
+                text-decoration: none;
+                font-size: 22px;
+                font-weight: bold;
+                margin-bottom: 40px;
+                padding: 0 10px;
+            }
+
+            .brand-icon {
+                display: grid;
+                place-items: center;
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
+                background: #4f46e5;
+                font-size: 22px;
+            }
+
+            .brand span:last-child {
+                color: #a5b4fc;
+            }
+
+            .menu-title {
+                color: #9ca3af;
+                font-size: 11px;
+                font-weight: bold;
+                letter-spacing: 1.5px;
+                margin: 0 12px 15px;
+            }
+
+            .sidebar .nav-link {
+                color: #cbd5e1;
+                padding: 13px 14px;
+                margin-bottom: 7px;
+                border-radius: 9px;
+                transition: 0.2s;
+            }
+
+                .sidebar .nav-link:hover {
+                    color: white;
+                    background: #312e81;
+                }
+
+            .main-panel {
+                flex: 1;
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .topbar {
+                background: white;
+                padding: 22px 32px;
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+                .topbar h1 {
+                    font-size: 23px;
+                    font-weight: bold;
+                    margin: 0;
+                }
+
+                .topbar p {
+                    color: #6b7280;
+                    margin: 6px 0 0;
+                    font-size: 13px;
+                }
+
+            .content-area {
+                flex: 1;
+                padding: 30px;
+            }
+
+                .content-area .btn-primary {
+                    background: #4f46e5;
+                    border-color: #4f46e5;
+                }
+
+                    .content-area .btn-primary:hover {
+                        background: #4338ca;
+                        border-color: #4338ca;
+                    }
+
+                .content-area .card {
+                    border: 1px solid #e5e7eb;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+                }
+
+                .content-area .form-control,
+                .content-area .form-select {
+                    border-radius: 8px;
+                    padding: 10px 12px;
+                }
+
+                .content-area .table {
+                    background: white;
+                    vertical-align: middle;
+                }
+
+                    .content-area .table thead th {
+                        background: #f8fafc;
+                        color: #475569;
+                        font-size: 13px;
+                        padding: 14px;
+                    }
+
+                    .content-area .table tbody td {
+                        padding: 14px;
+                    }
+
+            .app-footer {
+                padding: 18px 30px;
+                background: white;
+                border-top: 1px solid #e5e7eb;
+                color: #6b7280;
+                font-size: 13px;
+            }
+
+                .app-footer a {
+                    color: #4f46e5;
+                    text-decoration: none;
+                }
+
+            @@media (max-width: 768px) {
+                .app-layout {
+                    flex-direction: column;
+                }
+
+                .sidebar {
+                    width: 100%;
+                    padding: 18px;
+                }
+
+                .brand {
+                    margin-bottom: 20px;
+                }
+
+                .sidebar nav {
+                    display: flex;
+                    flex-direction: row !important;
+                    flex-wrap: wrap;
+                    gap: 5px;
+                }
+
+                .sidebar .nav-link {
+                    margin: 0;
+                    padding: 10px;
+                }
+
+                .topbar {
+                    padding: 20px;
+                }
+
+                .content-area {
+                    padding: 18px;
+                }
+
+                .app-footer {
+                    padding: 18px;
+                }
+            }
+    </style>
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">library</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+    <div class="app-layout">
+
+        <aside class="sidebar">
+            <a class="brand"
+               asp-controller="Home"
+               asp-action="Index">
+                <span class="brand-icon">📚</span>
+                <span>LibraryHub</span>
+            </a>
+
+            <div class="menu-title">MAIN MENU</div>
+
+            <nav class="nav flex-column">
+                <a class="nav-link"
+                   asp-controller="Home"
+                   asp-action="Index">
+                    🏠 &nbsp; Dashboard
+                </a>
+
+                <a class="nav-link"
+                   asp-controller="Books"
+                   asp-action="Index">
+                    📖 &nbsp; Books
+                </a>
+
+                <a class="nav-link"
+                   asp-controller="Members"
+                   asp-action="Index">
+                    👥 &nbsp; Members
+                </a>
+
+                <a class="nav-link"
+                   asp-controller="Home"
+                   asp-action="Privacy">
+                    ⚙️ &nbsp; Privacy
+                </a>
+            </nav>
+        </aside>
+
+        <div class="main-panel">
+
+            <header class="topbar">
+                <h1>@ViewData["Title"]</h1>
+                <p>Manage your library with ease.</p>
+            </header>
+
+            <div class="content-area">
+                <main role="main">
+                    @RenderBody()
+                </main>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+            <footer class="app-footer">
+                &copy; 2026 - LibraryHub |
+                <a asp-controller="Home" asp-action="Privacy">
+                    Privacy Policy
+                </a>
+            </footer>
+
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - library - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
