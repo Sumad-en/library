@@ -31,16 +31,26 @@ public class MembersController : Controller
     // POST /Members/Create : the form was submitted.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Members members)
+    public async Task<IActionResult> Create(Members member)
     {
-        if (!ModelState.IsValid)                        // a required field was left empty
+        if (!ModelState.IsValid)
         {
-            return View(members);
+            return View(member);
         }
-
-        await _members.AddAsync(members);
+        try
+        {
+            await _members.AddAsync(member);
+        }
+        catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.UniqueViolation)
+        {
+            // 5. Put a message under the Email box.
+            ModelState.AddModelError("Email", "Another member already uses this email.");
+            // 6. Show the form again, with what was typed.
+            return View(member);
+        }
         return RedirectToAction(nameof(Index));
     }
+
 
     // GET /Members/Edit/5 : the form, filled with member 5.
     public async Task<IActionResult> Edit(long id)
@@ -53,21 +63,33 @@ public class MembersController : Controller
         return View(members);
     }
 
-    // POST /Books/Edit/5 : the changed form was submitted.
+    // POST /Members/Edit/5 : the changed form was submitted.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Members members)
+    public async Task<IActionResult> Edit(Members member)
     {
         if (!ModelState.IsValid)
         {
-            return View(members);
+            return View(member);
         }
-
-        await _members.UpdateAsync(members);
+        try
+        {
+            await _members.UpdateAsync(member);
+        }
+        catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.UniqueViolation)
+        {
+            // 5. Put a message under the Email box.
+            ModelState.AddModelError("Email", "Another member already uses this email.");
+            // 6. Show the form again, with what was typed.
+            return View(member);
+        }
+        // 7. The changes were saved: go back to the list.
+        
         return RedirectToAction(nameof(Index));
     }
 
-  
+
+
     // POST /Members/Delete/5 : the delete was confirmed.
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
