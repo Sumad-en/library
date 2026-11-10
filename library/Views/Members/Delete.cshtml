@@ -2,6 +2,10 @@
 @{
     ViewData["Members"] = "Delete a member";
 }
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
 
 <h1 class="mb-3">Delete a member</h1>
 
@@ -16,9 +20,14 @@
         <dt class="col-4">member_type</dt>
         <dd class="col-8">@(Model.member_type)</dd>
     </dl>
-    <p class="text-muted small">Any loans of this book are deleted with it.</p>
+    <p class="text-muted small">Any member with an active loan will not be deleted.</p>
 
-    <form asp-action="Delete" asp-route-id="@Model.member_id" method="post">
+    <!-- The updated form mapping to [HttpPost] controller action -->
+    <form asp-controller="Members" asp-action="Delete" asp-route-id="@Model.member_id" method="post">
+        @Html.AntiForgeryToken()
+
+        <!-- Explicit input named 'id' ensures it binds directly to (long id) in your C# method -->
+        <input type="hidden" name="id" value="@Model.member_id" />
         <button type="submit" class="btn btn-danger">Delete</button>
         <a asp-action="Index" class="btn btn-link">Cancel</a>
     </form>
