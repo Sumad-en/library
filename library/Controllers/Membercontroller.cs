@@ -66,22 +66,22 @@ public class MembersController : Controller
     // POST /Members/Edit/5 : the changed form was submitted.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Members member)
+    public async Task<IActionResult> Edit(Members members)
     {
         if (!ModelState.IsValid)
         {
-            return View(member);
+            return View(members);
         }
         try
         {
-            await _members.UpdateAsync(member);
+            await _members.UpdateAsync(members);
         }
         catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.UniqueViolation)
         {
             // 5. Put a message under the Email box.
             ModelState.AddModelError("Email", "Another member already uses this email.");
             // 6. Show the form again, with what was typed.
-            return View(member);
+            return View(members);
         }
         // 7. The changes were saved: go back to the list.
         
