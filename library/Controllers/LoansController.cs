@@ -29,7 +29,7 @@ public class LoansController : Controller
     // Fills the Borrow form's two dropdowns from the database.
     private async Task FillDropdownsAsync()
     {
-        ViewBag.Members = new SelectList(await _members.GetAllAsync(), "MemberId", "FullName");
+        ViewBag.Members = new SelectList(await _members.GetAllAsync(), "member_id", "full_name");
         ViewBag.Books = new SelectList(await _books.GetAllAsync(), "BookId", "Title");
     }
 
@@ -63,5 +63,13 @@ public class LoansController : Controller
         return View(form);
     }
 
+    // POST /Loans/Return/5 : the Return button was pressed.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Return(long id)
+    {
+        await _loans.ReturnAsync(id);
+        return RedirectToAction(nameof(Index));
+    }
 
 }
