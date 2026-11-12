@@ -20,4 +20,7 @@ public class Members
     public string? email { get; set; }               // email        VARCHAR(120), may be NULL, UNIQUE
 
     public string member_type { get; set; } = "";     // member_type  VARCHAR(10) NOT NULL
+
+    public long OpenLoans { get; set; }              // filled only by the member list; never saved
+
 }

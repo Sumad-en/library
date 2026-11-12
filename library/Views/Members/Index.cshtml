@@ -30,6 +30,8 @@
                     <td class="text-end">@members.member_id</td>
                     <td>@members.full_name</td>
                     <td><span class="badge text-bg-secondary">@(members.member_type ?? "—")</span></td>
+                    <td class="text-end">@members.OpenLoans</td>
+                    <th class="text-end">Books out</th>
                     <td class="text-end">@(members.email)</td>                
                     <td class="text-end">
                         <a asp-action="Details" asp-route-id="@members.member_id" class="btn btn-sm btn-outline-primary">Loans</a>

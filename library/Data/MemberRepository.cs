@@ -18,33 +18,47 @@ public class MemberRepository
     // The positions 0 to 3 match the column order in both SELECTs above.
     private static Members ReadMember(NpgsqlDataReader reader)
     {
+        int emailOrdinal = reader.GetOrdinal("email");
         return new Members
         {
-            member_id = reader.GetInt64(0),
-            full_name = reader.GetString(1),
-            member_type = reader.GetString(2),
-            email = reader.IsDBNull(3) ? null : reader.GetString(3)
+            member_id = reader.GetInt64(reader.GetOrdinal("member_id")),
+            full_name = reader.GetString(reader.GetOrdinal("full_name")),
+            member_type = reader.GetString(reader.GetOrdinal("member_type")),
+            email = reader.IsDBNull(emailOrdinal) ? null : reader.GetString(emailOrdinal)
         };
     }
 
-    // READ: every book, sorted by title.
+    // READ: every member, with how many books each has out now.
     public async Task<List<Members>> GetAllAsync()
     {
-        const string sql = "SELECT member_id, full_name, member_type, email FROM lending.member ORDER BY full_name;";
+        // 1. The SQL: every member, joined to their open loans, which are counted.
+        const string sql =
+    "SELECT m.member_id, m.full_name, m.email, m.member_type, COUNT(l.loan_id) " +
+    "FROM lending.member m " +
+    "LEFT JOIN lending.loan l ON l.member_id = m.member_id AND l.returned_on IS NULL " +
+    "GROUP BY m.member_id " +
+    "ORDER BY m.full_name;";
 
+        // 2. An empty list, to fill.
         var members = new List<Members>();
-
-        // The command borrows a connection; 'await using' gives it back when the method ends.
+        // 3. A command that will run the SQL.
         await using var command = _dataSource.CreateCommand(sql);
+        // 4. Run it, and get a reader for the rows.
         await using var reader = await command.ExecuteReaderAsync();
-
-        while (await reader.ReadAsync())        // once for each row
+        
+        while (await reader.ReadAsync())
         {
-            members.Add(ReadMember(reader));
+            // 6. Copy the row into a Member.
+            var member = ReadMember(reader);
+            // 7. Add the count from the fifth column, which only this SELECT has.
+            member.OpenLoans = reader.GetInt64(4);
+            // 8. Add the member to the list.
+            members.Add(member);
         }
-
+        // 9. Give the list back.
         return members;
     }
+
 
     // CREATE: insert a new book. The database chooses its book_id.
     public async Task AddAsync(Members members)
